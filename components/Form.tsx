@@ -7,6 +7,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import {formatInput} from '../utils/textUtils';
 
 type FormProps = {
   createTodo: (title: string) => void;
@@ -65,7 +66,7 @@ export default function Form({createTodo}: FormProps) {
         onPressIn={() => (scale.value = 0.7)}
         onPressOut={() => (scale.value = 1)}
         onPress={() => {
-          createTodo(input);
+          createTodo(formatInput(input));
           setInput('');
         }}>
         <StyledText $textColor="white">+</StyledText>

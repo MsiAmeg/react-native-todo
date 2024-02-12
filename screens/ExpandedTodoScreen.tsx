@@ -1,4 +1,8 @@
-import {NativeSyntheticEvent, TextInputEndEditingEventData} from 'react-native';
+import {
+  NativeSyntheticEvent,
+  SafeAreaView,
+  TextInputEndEditingEventData,
+} from 'react-native';
 import {ExpandedTodoScreenProps} from '../types/types';
 import {StyledTodoTitle} from '../components/TodoItem';
 import {useContext, useEffect, useRef} from 'react';
@@ -48,46 +52,47 @@ export default function ExpandedTodoScreen({
   }, []);
 
   return (
-    <StyledContainer>
-      <StyledNavContainer>
-        <TodoBtn
-          handlePress={() => navigation.navigate('Home')}
-          accessibilityLabel="Go back button">
-          <StyledIcon
-            resizeMode="center"
-            source={require('../assets/goBackIcon.png')}
-          />
-        </TodoBtn>
-        <StyledText $textColor="white">Edit Title</StyledText>
-      </StyledNavContainer>
-      <StyledExpandedTitle
-        ref={inputRef}
-        multiline
-        maxLength={40}
-        defaultValue={expandedTodo.title}
-        onEndEditing={onEndEditingHandler}
-      />
-    </StyledContainer>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#474747'}}>
+      <StyledContainer>
+        <StyledNavContainer>
+          <TodoBtn
+            handlePress={() => navigation.navigate('Home')}
+            accessibilityLabel="Go back button">
+            <StyledIcon
+              resizeMode="center"
+              source={require('../assets/goBackIcon.png')}
+            />
+          </TodoBtn>
+          <StyledText $textColor="white">Edit Title</StyledText>
+        </StyledNavContainer>
+        <StyledExpandedTitle
+          ref={inputRef}
+          multiline
+          maxLength={40}
+          defaultValue={expandedTodo.title}
+          onEndEditing={onEndEditingHandler}
+        />
+      </StyledContainer>
+    </SafeAreaView>
   );
 }
 
 const StyledContainer = styled.ScrollView`
   flex: 1;
-  background-color: #474747;
-  padding: 10px 20px 10px 20px;
+  padding: 0 20px;
+  gap: 20px;
 `;
 
 const StyledNavContainer = styled.View`
   flex: 1;
   flex-direction: row;
   align-items: center;
-  padding: 10px 0 10px 0;
   gap: 20px;
+  padding: 15px 0;
 `;
 
 const StyledExpandedTitle = styled(StyledTodoTitle)`
-  margin-bottom: 30px;
-  padding: 5px 10px 0 10px;
+  padding: 5px 10px;
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   min-height: 100px;
