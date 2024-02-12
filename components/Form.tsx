@@ -36,7 +36,7 @@ export default function Form({createTodo}: FormProps) {
   };
 
   useEffect(() => {
-    setIsValid(/[^ ]+/g.test(input));
+    setIsValid(/[^ \n]+/g.test(input));
   }, [input]);
 
   return (

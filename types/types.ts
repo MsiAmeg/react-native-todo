@@ -8,7 +8,9 @@ export type TodoT = {
 
 export type StackParamList = {
   Home: undefined;
-  ExpandedTodo: {todo: TodoT};
+  ExpandedTodo: {
+    todoId: number;
+  };
 };
 
 export type HomeScreenProps = NativeStackScreenProps<StackParamList, 'Home'>;

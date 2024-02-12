@@ -1,8 +1,4 @@
-import {
-  NativeSyntheticEvent,
-  Pressable,
-  TextInputEndEditingEventData,
-} from 'react-native';
+import {Pressable, TextInput} from 'react-native';
 
 import {StyledIcon} from './styled';
 import {TodoT} from '../types/types';
@@ -20,11 +16,9 @@ import Animated, {
 import styled from 'styled-components/native';
 import TodoBtn from './TodoBtn';
 
-type TodoItemProps = {
-  item: TodoT;
+export type TodoItemProps = {
   title: string;
   isDone: boolean;
-  delay: number;
   handleEdit: (item: TodoT) => void;
   handleExpand: () => void;
   handleDelete: () => void;
@@ -32,11 +26,8 @@ type TodoItemProps = {
 };
 
 export default function TodoItem({
-  item,
   title,
   isDone,
-  delay,
-  handleEdit,
   handleExpand,
   handleDelete,
   handleDone,
@@ -51,21 +42,11 @@ export default function TodoItem({
     ),
   }));
 
-  const onEndEditingHandler = (
-    e: NativeSyntheticEvent<TextInputEndEditingEventData>,
-  ) => {
-    if (/[^ ]+/g.test(e.nativeEvent.text) && e.nativeEvent.text !== title) {
-      handleEdit({...item, title: e.nativeEvent.text});
-    } else if (e.nativeEvent.text === '') {
-      handleDelete();
-    }
-  };
-
   return (
     <StyledContainer
       style={animatedStyles}
       $isDone={isDone}
-      entering={FadeInUp.delay(delay)}
+      entering={FadeInUp}
       exiting={FadeOut}
       layout={CurvedTransition}
       onPress={handleExpand}>
@@ -73,7 +54,7 @@ export default function TodoItem({
         multiline
         maxLength={40}
         defaultValue={title}
-        onEndEditing={onEndEditingHandler}
+        editable={false}
       />
       <StyledOptionsWrapper>
         {!isDone && (
@@ -113,7 +94,9 @@ const StyledContainer = styled(Animated.createAnimatedComponent(Pressable))<{
   border-bottom-width: 2px;
 `;
 
-const StyledTodoTitle = styled.TextInput`
+export const StyledTodoTitle = styled(
+  Animated.createAnimatedComponent(TextInput),
+)`
   flex: 1;
   font-size: 24px;
   font-weight: 600;
