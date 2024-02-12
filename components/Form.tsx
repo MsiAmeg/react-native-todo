@@ -1,9 +1,7 @@
-import {View} from 'react-native';
 import {StyledBtn, StyledInput, StyledText} from './styled';
 import {useEffect, useState} from 'react';
 import Animated, {
   Easing,
-  FadeInDown,
   FadeInUp,
   useAnimatedStyle,
   useSharedValue,

@@ -5,6 +5,7 @@ import {TodosContext} from '../contexts/TodosContext';
 import {FlatList} from 'react-native';
 
 import TodoItem from './TodoItem';
+import Animated, {CurvedTransition} from 'react-native-reanimated';
 
 export default function TodoList() {
   const {todos, handleDeleteTodo, handleDoneTodo, handleEditTodo} =
@@ -16,8 +17,11 @@ export default function TodoList() {
     navigation.navigate('ExpandedTodo', {todoId});
   };
 
+  const transition = CurvedTransition;
+
   return (
-    <FlatList
+    <Animated.FlatList
+      layout={transition}
       style={{paddingHorizontal: 20, gap: 20}}
       data={todos}
       renderItem={({item}) => (

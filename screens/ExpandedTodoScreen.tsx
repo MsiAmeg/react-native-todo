@@ -1,7 +1,7 @@
 import {NativeSyntheticEvent, TextInputEndEditingEventData} from 'react-native';
 import {ExpandedTodoScreenProps} from '../types/types';
 import {StyledTodoTitle} from '../components/TodoItem';
-import {useContext} from 'react';
+import {useContext, useEffect, useRef} from 'react';
 import {TodosContext} from '../contexts/TodosContext';
 import {StyledIcon, StyledText} from '../components/styled';
 
@@ -9,6 +9,7 @@ import {formatInput} from '../utils/textUtils';
 
 import TodoBtn from '../components/TodoBtn';
 import styled from 'styled-components/native';
+import {TextInput} from 'react-native-gesture-handler';
 
 export default function ExpandedTodoScreen({
   navigation,
@@ -17,6 +18,8 @@ export default function ExpandedTodoScreen({
   const {todoId} = route.params;
 
   const {todos, handleEditTodo, handleDeleteTodo} = useContext(TodosContext);
+
+  const inputRef = useRef<TextInput>(null);
 
   const expandedTodo = todos.find(el => el.id === todoId);
   if (expandedTodo === undefined) throw new Error('selected todo not found');
@@ -38,6 +41,12 @@ export default function ExpandedTodoScreen({
     }
   };
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   return (
     <StyledContainer>
       <StyledNavContainer>
@@ -52,6 +61,7 @@ export default function ExpandedTodoScreen({
         <StyledText $textColor="white">Edit Title</StyledText>
       </StyledNavContainer>
       <StyledExpandedTitle
+        ref={inputRef}
         multiline
         maxLength={40}
         defaultValue={expandedTodo.title}

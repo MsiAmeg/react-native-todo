@@ -11,6 +11,7 @@ import Animated, {
   useSharedValue,
   withTiming,
   interpolateColor,
+  FadeOutUp,
 } from 'react-native-reanimated';
 
 import styled from 'styled-components/native';
@@ -47,7 +48,7 @@ export default function TodoItem({
       style={animatedStyles}
       $isDone={isDone}
       entering={FadeInUp}
-      exiting={FadeOut}
+      exiting={FadeOutUp}
       layout={CurvedTransition}
       onPress={handleExpand}>
       <StyledTodoTitle
@@ -56,7 +57,7 @@ export default function TodoItem({
         defaultValue={title}
         editable={false}
       />
-      <StyledOptionsWrapper>
+      <StyledOptionsWrapper onStartShouldSetResponder={e => true}>
         {!isDone && (
           <TodoBtn
             handlePress={() => {

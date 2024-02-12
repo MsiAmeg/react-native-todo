@@ -2,16 +2,16 @@ import React, {useContext, useEffect} from 'react';
 
 import {TodoT} from '../types/types';
 import {Alert, SafeAreaView} from 'react-native';
+import {TodosContext} from '../contexts/TodosContext';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Header from '../components/Header';
 import Form from '../components/Form';
-import {TodosContext} from '../contexts/TodosContext';
 import TodoList from '../components/TodoList';
 
 export default function HomeScreen() {
-  const todosCtx = useContext(TodosContext);
+  const {todos, setTodos, handleCreateTodo} = useContext(TodosContext);
 
   const storeTodos = async (value: TodoT[]) => {
     AsyncStorage.setItem('Todos', JSON.stringify(value)).catch(err => {
@@ -23,7 +23,7 @@ export default function HomeScreen() {
     AsyncStorage.getItem('Todos')
       .then(jsonValue => {
         if (jsonValue) {
-          todosCtx.setTodos(JSON.parse(jsonValue));
+          setTodos(JSON.parse(jsonValue));
         }
       })
       .catch(err => {
@@ -36,15 +36,15 @@ export default function HomeScreen() {
   }, []);
 
   useEffect(() => {
-    if (todosCtx.todos.length >= 1) {
-      storeTodos(todosCtx.todos);
+    if (todos.length >= 1) {
+      storeTodos(todos);
     }
-  }, [todosCtx.todos]);
+  }, [todos]);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#474747'}}>
       <Header />
-      <Form createTodo={todosCtx.handleCreateTodo} />
+      <Form createTodo={handleCreateTodo} />
       <TodoList />
     </SafeAreaView>
   );
