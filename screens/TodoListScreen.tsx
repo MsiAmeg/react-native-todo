@@ -10,8 +10,6 @@ export default function TodoListScreen({
   const {todos} = useContext(TodosContext);
   const filteredTodos = todosFiltered();
 
-  console.log(route.params.filter, filteredTodos);
-
   function todosFiltered(): TodoT[] {
     const mode = route.params.filter;
     if (mode === 'finished') {

@@ -9,12 +9,7 @@ import DeleteIcon from '../assets/deleteIcon.png';
 import Animated, {
   FadeInUp,
   CurvedTransition,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-  interpolateColor,
   FadeOutUp,
-  runOnJS,
 } from 'react-native-reanimated';
 
 import styled from 'styled-components/native';
@@ -38,19 +33,8 @@ export default function TodoItem({
   handleDelete,
   handleDone,
 }: TodoItemProps): React.JSX.Element {
-  const borderColor = useSharedValue(isDone ? 1 : 0);
-
-  const animatedStyles = useAnimatedStyle(() => ({
-    borderBottomColor: interpolateColor(
-      borderColor.value,
-      [0, 1],
-      ['#EFBA36', '#44E417'],
-    ),
-  }));
-
   return (
     <StyledContainer
-      style={animatedStyles}
       $isDone={isDone}
       entering={FadeInUp}
       exiting={FadeOutUp}
@@ -65,12 +49,7 @@ export default function TodoItem({
       />
       <StyledOptionsWrapper onStartShouldSetResponder={e => true}>
         {!isDone && (
-          <TodoBtn
-            handlePress={() => {
-              borderColor.value = withTiming(1);
-              handleDone();
-            }}
-            accessibilityLabel="Mark Todo done">
+          <TodoBtn handlePress={handleDone} accessibilityLabel="Mark Todo done">
             <StyledIcon resizeMode="center" source={DoneIcon} />
           </TodoBtn>
         )}
@@ -93,6 +72,7 @@ const StyledContainer = styled(Animated.createAnimatedComponent(Pressable))<{
   padding: 10px 15px;
   border-radius: 10px;
   border-bottom-width: 2px;
+  border-bottom-color: ${props => (props.$isDone ? '#44E417' : '#EFBA36')};
 `;
 
 export const StyledTodoTitle = styled(
