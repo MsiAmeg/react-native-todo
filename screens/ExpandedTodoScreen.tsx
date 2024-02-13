@@ -10,10 +10,10 @@ import {TodosContext} from '../contexts/TodosContext';
 import {StyledIcon, StyledText} from '../components/styled';
 
 import {formatInput} from '../utils/textUtils';
+import {TextInput} from 'react-native-gesture-handler';
 
 import TodoBtn from '../components/TodoBtn';
 import styled from 'styled-components/native';
-import {TextInput} from 'react-native-gesture-handler';
 
 export default function ExpandedTodoScreen({
   navigation,
@@ -46,10 +46,18 @@ export default function ExpandedTodoScreen({
   };
 
   useEffect(() => {
-    if (inputRef.current) {
+    if (inputRef.current && inputRef.current.defaultProps) {
+      inputRef.current.defaultProps.editable = true;
       inputRef.current.focus();
     }
   }, []);
+
+  // without sharedTransitionTag
+  // useEffect(() => {
+  //   if (inputRef.current) {
+  //     inputRef.current.focus();
+  //   }
+  // }, []);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#474747'}}>
@@ -66,11 +74,15 @@ export default function ExpandedTodoScreen({
           <StyledText $textColor="white">Edit Title</StyledText>
         </StyledNavContainer>
         <StyledExpandedTitle
+          blurOnSubmit
+          sharedTransitionTag={`todoTitle${expandedTodo.id}`}
           ref={inputRef}
           multiline
           maxLength={40}
           defaultValue={expandedTodo.title}
           onEndEditing={onEndEditingHandler}
+          onTouchStart={e => e.stopPropagation()}
+          editable
         />
       </StyledContainer>
     </SafeAreaView>

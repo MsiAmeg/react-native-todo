@@ -1,31 +1,48 @@
 import {useContext} from 'react';
-import {ParamListBase, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {TodosContext} from '../contexts/TodosContext';
-import {FlatList} from 'react-native';
+
+import Animated, {CurvedTransition} from 'react-native-reanimated';
+import {StackParamList, TodoT} from '../types/types';
 
 import TodoItem from './TodoItem';
-import Animated, {CurvedTransition} from 'react-native-reanimated';
+import {Text, View} from 'react-native';
+import {StyledText} from './styled';
 
-export default function TodoList() {
-  const {todos, handleDeleteTodo, handleDoneTodo, handleEditTodo} =
+type TodoListProps = {
+  todos: TodoT[];
+};
+
+const EmptyList = (
+  <View
+    style={{
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+    <StyledText $textColor="white">There is nothing</StyledText>
+  </View>
+);
+
+export default function TodoList({todos}: TodoListProps) {
+  const {handleDeleteTodo, handleDoneTodo, handleEditTodo} =
     useContext(TodosContext);
 
-  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
 
   const handleExpandTodo = (todoId: number) => {
     navigation.navigate('ExpandedTodo', {todoId});
   };
 
-  const transition = CurvedTransition;
-
   return (
     <Animated.FlatList
-      layout={transition}
+      layout={CurvedTransition}
       style={{paddingHorizontal: 20, gap: 20}}
       data={todos}
       renderItem={({item}) => (
         <TodoItem
+          id={item.id}
           title={item.title}
           isDone={item.isDone}
           handleEdit={handleEditTodo}
@@ -41,6 +58,7 @@ export default function TodoList() {
         />
       )}
       keyExtractor={item => item.id.toString()}
+      ListEmptyComponent={EmptyList}
     />
   );
 }

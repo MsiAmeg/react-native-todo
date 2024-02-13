@@ -18,3 +18,9 @@ export type ExpandedTodoScreenProps = NativeStackScreenProps<
   StackParamList,
   'ExpandedTodo'
 >;
+
+export type TabsParamList = {
+  All: {filter: 'all'};
+  Finished: {filter: 'finished'};
+  Unfinished: {filter: 'unfinished'};
+};

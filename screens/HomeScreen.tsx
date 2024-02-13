@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react';
 
-import {TodoT} from '../types/types';
-import {Alert, SafeAreaView} from 'react-native';
+import {TabsParamList, TodoT} from '../types/types';
+import {ActivityIndicator, Alert, SafeAreaView, View} from 'react-native';
 import {TodosContext} from '../contexts/TodosContext';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,6 +9,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Header from '../components/Header';
 import Form from '../components/Form';
 import TodoList from '../components/TodoList';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import TabsNavigator from '../components/TabsNavigator';
 
 export default function HomeScreen() {
   const {todos, setTodos, handleCreateTodo} = useContext(TodosContext);
@@ -45,7 +47,7 @@ export default function HomeScreen() {
     <SafeAreaView style={{flex: 1, backgroundColor: '#474747'}}>
       <Header />
       <Form createTodo={handleCreateTodo} />
-      <TodoList />
+      <TabsNavigator />
     </SafeAreaView>
   );
 }

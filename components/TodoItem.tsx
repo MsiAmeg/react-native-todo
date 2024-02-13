@@ -3,21 +3,25 @@ import {Pressable, TextInput} from 'react-native';
 import {StyledIcon} from './styled';
 import {TodoT} from '../types/types';
 
+import DoneIcon from '../assets/doneIcon.png';
+import DeleteIcon from '../assets/deleteIcon.png';
+
 import Animated, {
   FadeInUp,
-  FadeOut,
   CurvedTransition,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
   interpolateColor,
   FadeOutUp,
+  runOnJS,
 } from 'react-native-reanimated';
 
 import styled from 'styled-components/native';
 import TodoBtn from './TodoBtn';
 
 export type TodoItemProps = {
+  id: number;
   title: string;
   isDone: boolean;
   handleEdit: (item: TodoT) => void;
@@ -27,6 +31,7 @@ export type TodoItemProps = {
 };
 
 export default function TodoItem({
+  id,
   title,
   isDone,
   handleExpand,
@@ -52,6 +57,7 @@ export default function TodoItem({
       layout={CurvedTransition}
       onPress={handleExpand}>
       <StyledTodoTitle
+        sharedTransitionTag={`todoTitle${id}`}
         multiline
         maxLength={40}
         defaultValue={title}
@@ -61,21 +67,15 @@ export default function TodoItem({
         {!isDone && (
           <TodoBtn
             handlePress={() => {
-              handleDone();
               borderColor.value = withTiming(1);
+              handleDone();
             }}
             accessibilityLabel="Mark Todo done">
-            <StyledIcon
-              resizeMode="center"
-              source={require('../assets/doneIcon.png')}
-            />
+            <StyledIcon resizeMode="center" source={DoneIcon} />
           </TodoBtn>
         )}
         <TodoBtn handlePress={handleDelete} accessibilityLabel="delete Todo">
-          <StyledIcon
-            resizeMode="center"
-            source={require('../assets/deleteIcon.png')}
-          />
+          <StyledIcon resizeMode="center" source={DeleteIcon} />
         </TodoBtn>
       </StyledOptionsWrapper>
     </StyledContainer>
@@ -102,6 +102,10 @@ export const StyledTodoTitle = styled(
   font-size: 24px;
   font-weight: 600;
   color: white;
+  padding-left: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  text-align-vertical: top;
 `;
 
 const StyledOptionsWrapper = styled.View`
